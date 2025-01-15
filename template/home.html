@@ -36,11 +36,13 @@
         </button>
       </form>
     </h1>
-    
+  </div>
+
+  <div class="container mt-5">
     <!-- Content Block -->
     <div class="row">
       <div class="col-12">
-        <div class="row align-items-start">
+        <div class="row align-items-start justify-content-between">
           <div class="col-sm-4 bg-white pt-3 pb-3 rounded-3">
             <h4 class="text-center alert alert-info"> Create New Task</h4>
             <form action="" method="POST">
@@ -52,20 +54,19 @@
             </form>
           </div>
 
-          <div class="col-sm-7 offset-1 bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
+          <div class="col-sm-7 bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
             <h4 class="text-center alert alert-info">Pending Task</h4>
             {% if pending_tasks %}
-            <h4>Table Data</h4>
             <table class="table table-hover">
-              <thead>
+              <thead class="position-sticky top-0 bg-white">
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Start Time</th>
-                  <th scope="col">Deadline</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Action</th>
+                  <th scope="col" class="text-nowrap">ID</th>
+                  <th scope="col" class="text-nowrap">Title</th>
+                  <th scope="col" class="text-nowrap">Start Time</th>
+                  <th scope="col" class="text-nowrap">Deadline</th>
+                  <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">Description</th>
+                  <th scope="col" class="text-nowrap" class="text-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,21 +111,20 @@
         </div>
 
         <div class="row align-items-start mt-5 mb-5">
-          <div class="col-sm-7 bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
+          <div class=" bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
             <h4 class="text-center alert alert-success">Completed Tasks</h4>
 
             {% if completed_tasks %}
-            <h4>Table Data</h4>
             <table class="table table-hover">
-              <thead>
+              <thead class="position-sticky top-0 bg-white">
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Start Time</th>
-                  <th scope="col">End Time</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Action</th>
+                  <th scope="col" class="text-nowrap">ID</th>
+                  <th scope="col" class="text-nowrap">Title</th>
+                  <th scope="col" class="text-nowrap">Start Time</th>
+                  <th scope="col" class="text-nowrap">End Time</th>
+                  <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">Description</th>
+                  <th scope="col" class="text-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>
