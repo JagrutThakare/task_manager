@@ -3,6 +3,7 @@ from tasks.models import Task
 from tasks.forms import TaskForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from task_manager.utils import get_user_tasks  # Import the utility function
 
 @login_required
 def home(request):
@@ -16,9 +17,9 @@ def home(request):
     else:
         fm = TaskForm()
 
-    # Filter tasks based on the logged-in user and their status
-    pending_tasks = Task.objects.filter(user=request.user, status='Pending')
-    completed_tasks = Task.objects.filter(user=request.user, status='Completed')
+    # Use the cache function to get tasks before querying the database
+    pending_tasks = get_user_tasks(request.user).filter(status='Pending')
+    completed_tasks = get_user_tasks(request.user).filter(status='Completed')
     
     return render(request, 'home.html', {
         'form': fm,
@@ -32,7 +33,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect('/accounts/login/')
-    else :
+    else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 

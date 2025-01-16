@@ -1,3 +1,5 @@
 psycopg
 django
 djangorestframework
+redis
+prettytable
