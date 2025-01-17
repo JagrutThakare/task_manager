@@ -84,5 +84,12 @@ docker run --name redis -p 6379:6379 -d redis
 docker exec -it redis redis-cli
 ```
 
-### Celery :
-Ref : https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
+### Celery Commands :
+
+```bash
+# Start Celery worker
+celery -A task_manager worker --loglevel=info -P solo
+
+# Start Celery Beat scheduler (if periodic tasks are needed)
+celery -A task_manager beat --loglevel=info
+```

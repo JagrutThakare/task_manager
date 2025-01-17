@@ -15,6 +15,7 @@
 </head>
 
 <body>
+  <!-- Navbar -->
   <div class="container mt-5">
     <h1
       class="text-center bg-white text-black pb-3 pt-3 mb-4 rounded-pill d-flex justify-content-between align-items-center px-4">
@@ -38,138 +39,197 @@
     </h1>
   </div>
 
+  
+  <!-- Content Block -->
   <div class="container mt-5">
-    <!-- Content Block -->
-    <div class="row">
-      <div class="col-12">
-        <div class="row align-items-start justify-content-between">
-          <div class="col-sm-4 bg-white pt-3 pb-3 rounded-3">
-            <h4 class="text-center alert alert-info"> Create New Task</h4>
-            <form action="" method="POST">
-              {% csrf_token %}
-              {{form.as_p}}
-              <div class="text-center">
-                <input type="submit" class="btn btn-success" value="Create">
-              </div>
-            </form>
+    <!--FOrm and Completed Tasks-->
+    <div class="row align-items-start justify-content-between">
+      <div class="col-sm-4 bg-white pt-3 pb-3 rounded-3">
+        <h4 class="text-center alert alert-info"> Create New Task</h4>
+        <form action="" method="POST">
+          {% csrf_token %}
+          {{form.as_p}}
+          <div class="text-center">
+            <input type="submit" class="btn btn-success" value="Create">
           </div>
+        </form>
+      </div>
 
-          <div class="col-sm-7 bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
-            <h4 class="text-center alert alert-info">Pending Task</h4>
-            {% if pending_tasks %}
-            <table class="table table-hover">
-              <thead class="position-sticky top-0 bg-white">
-                <tr>
-                  <th scope="col" class="text-nowrap">ID</th>
-                  <th scope="col" class="text-nowrap">Title</th>
-                  <th scope="col" class="text-nowrap">Start Time</th>
-                  <th scope="col" class="text-nowrap">Deadline</th>
-                  <th scope="col" class="text-nowrap">Status</th>
-                  <th scope="col" class="text-nowrap">Description</th>
-                  <th scope="col" class="text-nowrap" class="text-nowrap">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for task in pending_tasks %}
-                <tr>
-                  <th scope="row">{{forloop.counter}}</th>
-                  <td>{{task.title}}</td>
-                  <td>{{task.start_time}}</td>
-                  <td>{{task.deadline}}</td>
-                  <td>{{task.status}}</td>
-                  <td>{{task.description}}</td>
-                  <td>
-                    <a href="{% url 'updatedata' task.id %}" class="btn btn-warning btn-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
-                        class="bi bi-pencil" viewBox="0 0 16 16">
-                        <path
-                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                      </svg>
-
-
-                    </a>
-                    <form action="{% url 'deletedata' task.id %}" method="post" class="mt-1">
-                      {% csrf_token %}
-                      <button type="submit" value="Delete" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-archive" viewBox="0 0 16 16">
-                          <path
-                            d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-                        </svg>
-                      </button>
-
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% else %}
-            <h6 class="text-center alert">No Records</h4>
-              {% endif %}
-          </div>
-        </div>
-
-        <div class="row align-items-start mt-5 mb-5">
-          <div class=" bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
-            <h4 class="text-center alert alert-success">Completed Tasks</h4>
-
-            {% if completed_tasks %}
-            <table class="table table-hover">
-              <thead class="position-sticky top-0 bg-white">
-                <tr>
-                  <th scope="col" class="text-nowrap">ID</th>
-                  <th scope="col" class="text-nowrap">Title</th>
-                  <th scope="col" class="text-nowrap">Start Time</th>
-                  <th scope="col" class="text-nowrap">End Time</th>
-                  <th scope="col" class="text-nowrap">Status</th>
-                  <th scope="col" class="text-nowrap">Description</th>
-                  <th scope="col" class="text-nowrap">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for task in completed_tasks %}
-                <tr>
-                  <th scope="row">{{forloop.counter}}</th>
-                  <td>{{task.title}}</td>
-                  <td>{{task.start_time}}</td>
-                  <td>{{task.deadline}}</td>
-                  <td>{{task.status}}</td>
-                  <td>{{task.description}}</td>
-                  <td>
-                    <a href="{% url 'updatedata' task.id %}" class="btn btn-warning btn-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
-                        class="bi bi-pencil" viewBox="0 0 16 16">
-                        <path
-                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
-                      </svg>
+      <div class="col-sm-7 bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
+        <h4 class="text-center alert alert-success">Completed Task</h4>
+        {% if completed_tasks %}
+        <table class="table table-hover">
+          <thead class="position-sticky top-0 bg-white">
+            <tr>
+              <th scope="col" class="text-nowrap">ID</th>
+              <th scope="col" class="text-nowrap">Title</th>
+              <th scope="col" class="text-nowrap">Start Time</th>
+              <th scope="col" class="text-nowrap">Last Updated</th>
+              <th scope="col" class="text-nowrap">Deadline</th>
+              <th scope="col" class="text-nowrap">Description</th>
+              <th scope="col" class="text-nowrap" class="text-nowrap">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in completed_tasks %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{task.title}}</td>
+              <td>{{task.created_at}}</td>
+              <td>{{task.updated_at}}</td>
+              <td>{{task.due_date}}</td>
+              <td>{{task.description}}</td>
+              <td>
+                <a href="{% url 'updatedata' task.id %}" class="btn btn-warning btn-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                    class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path
+                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                  </svg>
 
 
-                    </a>
-                    <form action="{% url 'deletedata' task.id %}" method="post" class="mt-1">
-                      {% csrf_token %}
-                      <button type="submit" value="Delete" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-archive" viewBox="0 0 16 16">
-                          <path
-                            d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-                        </svg>
-                      </button>
+                </a>
+                <form action="{% url 'deletedata' task.id %}" method="post" class="mt-1">
+                  {% csrf_token %}
+                  <button type="submit" value="Delete" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-archive" viewBox="0 0 16 16">
+                      <path
+                        d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                    </svg>
+                  </button>
 
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% else %}
-            <h6 class="text-center alert">No Records</h4>
-              {% endif %}
-          </div>
-        </div>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <h6 class="text-center alert">No Records</h4>
+          {% endif %}
+      </div>
+    </div>
+
+    <!--Pending Tasks-->
+    <div class="row align-items-start mt-5 mb-5">
+      <div class=" bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
+        <h4 class="text-center alert alert-info">Pending Tasks</h4>
+
+        {% if pending_tasks %}
+        <table class="table table-hover">
+          <thead class="position-sticky top-0 bg-white">
+            <tr>
+              <th scope="col" class="text-nowrap">ID</th>
+              <th scope="col" class="text-nowrap">Title</th>
+              <th scope="col" class="text-nowrap">Start Time</th>
+              <th scope="col" class="text-nowrap">Last Updated</th>
+              <th scope="col" class="text-nowrap">Deadline</th>
+              <th scope="col" class="text-nowrap">Description</th>
+              <th scope="col" class="text-nowrap" class="text-nowrap">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in pending_tasks %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{task.title}}</td>
+              <td>{{task.created_at}}</td>
+              <td>{{task.updated_at}}</td>
+              <td>{{task.due_date}}</td>
+              <td>{{task.description}}</td>
+              <td>
+                <a href="{% url 'updatedata' task.id %}" class="btn btn-warning btn-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                    class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path
+                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                  </svg>
+
+
+                </a>
+                <form action="{% url 'deletedata' task.id %}" method="post" class="mt-1">
+                  {% csrf_token %}
+                  <button type="submit" value="Delete" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-archive" viewBox="0 0 16 16">
+                      <path
+                        d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                    </svg>
+                  </button>
+
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <h6 class="text-center alert">No Records</h4>
+          {% endif %}
+      </div>
+    </div>
+
+    <!--Scheduled Tasks-->
+    <div class="row align-items-start mt-5 mb-5">
+      <div class=" bg-white pt-3 pb-3 rounded-3 overflow-auto" style="max-height: 500px;">
+        <h4 class="text-center alert alert-dark">Scheduled Tasks</h4>
+
+        {% if scheduled_tasks %}
+        <table class="table table-hover">
+          <thead class="position-sticky top-0 bg-white">
+            <tr>
+              <th scope="col" class="text-nowrap">ID</th>
+              <th scope="col" class="text-nowrap">Title</th>
+              <th scope="col" class="text-nowrap">Start Time</th>
+              <th scope="col" class="text-nowrap">Last Updated</th>
+              <th scope="col" class="text-nowrap">Deadline</th>
+              <th scope="col" class="text-nowrap">Description</th>
+              <th scope="col" class="text-nowrap" class="text-nowrap">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in scheduled_tasks %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{task.title}}</td>
+              <td>{{task.created_at}}</td>
+              <td>{{task.updated_at}}</td>
+              <td>{{task.due_date}}</td>
+              <td>{{task.description}}</td>
+              <td>
+                <a href="{% url 'updatedata' task.id %}" class="btn btn-warning btn-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
+                    class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path
+                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                  </svg>
+
+
+                </a>
+                <form action="{% url 'deletedata' task.id %}" method="post" class="mt-1">
+                  {% csrf_token %}
+                  <button type="submit" value="Delete" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-archive" viewBox="0 0 16 16">
+                      <path
+                        d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                    </svg>
+                  </button>
+
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <h6 class="text-center alert">No Records</h4>
+          {% endif %}
       </div>
     </div>
   </div>
+
 
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>

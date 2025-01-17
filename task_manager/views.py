@@ -1,9 +1,12 @@
 from django.shortcuts import redirect, render, HttpResponseRedirect, get_object_or_404
+from pytz import timezone
 from tasks.models import Task
 from tasks.forms import TaskForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from task_manager.utils import get_user_tasks  # Import the utility function
+from datetime import datetime, timedelta
+from task_manager.tasks import activate_task
 
 @login_required
 def home(request):
@@ -13,6 +16,14 @@ def home(request):
             task = fm.save(commit=False)
             task.user = request.user  # Associate the task with the logged-in user
             task.save()
+            # Schedule the task to activate on the task's created_at time
+            print(task.created_at)
+            if task.created_at:
+                print("Task scheduling")
+                activate_task.apply_async(
+                    args= [task.id], 
+                    eta= task.created_at
+                )
             fm = TaskForm()
     else:
         fm = TaskForm()
@@ -20,11 +31,12 @@ def home(request):
     # Use the cache function to get tasks before querying the database
     pending_tasks = get_user_tasks(request.user).filter(status='Pending')
     completed_tasks = get_user_tasks(request.user).filter(status='Completed')
-    
+    scheduled_tasks = get_user_tasks(request.user).filter(status='Scheduled')
     return render(request, 'home.html', {
         'form': fm,
         'pending_tasks': pending_tasks,
-        'completed_tasks': completed_tasks
+        'completed_tasks': completed_tasks,
+        'scheduled_tasks': scheduled_tasks
     })
 
 def signup(request):
