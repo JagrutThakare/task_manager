@@ -11,7 +11,8 @@ def get_user_tasks(user):
         print(tasks)
         cache.set(cache_key, tasks, timeout=60*60) 
         print("=========================================================Data Cached=========================================================")
+        print(tasks)
     else:
         print("=========================================================Data Fetched from Cache=========================================================")
-    
+        print(tasks)
     return tasks

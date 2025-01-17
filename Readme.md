@@ -1,11 +1,18 @@
 # Task Management System
 ---
-
+![Project Image](/static/videos/task4.mp4)
 ## Technologies Used:
 - Django (Python Framework)
 - HTML
 - Bootstrap 5
 - PostgreSQL
+- Redis
+
+### Docker commands
+```bash
+docker run --name redis -p 6379:6379 -d redis
+docker exec -it redis redis-cli
+```
 
 ## Performs CRUD Operations
 
@@ -36,6 +43,7 @@
 - Delete task in database.
 - select request to DELETE
 - in the url type http://127.0.0.1:8000/api/tasks/1/
+
 
 
 ## Schema
