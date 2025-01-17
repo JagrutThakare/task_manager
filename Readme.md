@@ -92,4 +92,8 @@ celery -A task_manager worker --loglevel=info -P solo
 
 # Start Celery Beat scheduler (if periodic tasks are needed)
 celery -A task_manager beat --loglevel=info
+
+# Start Flower 
+celery -A task_manager flower --port=5555
+
 ```
