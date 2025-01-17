@@ -1,6 +1,5 @@
 # Task Management System
 ---
-![Project Image](/static/videos/task4.mp4)
 ## Technologies Used:
 - Django (Python Framework)
 - HTML
