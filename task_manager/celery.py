@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
+from celery.schedules import crontab
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_manager.settings')
 
@@ -22,15 +23,15 @@ app.conf.update(
 
 app.conf.beat_schedule = {
     'generate_weekly_reports': {
-        'task': 'tasks.tasks.generate_weekly_reports',
-        'schedule': {
-            'type': 'crontab',
-            'minute': 0,
-            'hour': 9,
-            'day_of_week': 1,  # Monday
-        },
+        'task': 'task_manager.tasks.generate_weekly_reports',
+        'schedule': crontab(hour=9, minute=00, day_of_week=1),  # Every Monday at 9:00 AM
+    },
+    'generate_reports': {
+        'task': 'task_manager.tasks.generate_reports',
+        'schedule': crontab(hour=16, minute=10, day_of_week='1'),
     },
 }
+
 app.autodiscover_tasks()
 
 @app.task(bind=True)

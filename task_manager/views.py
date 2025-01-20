@@ -6,27 +6,18 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from task_manager.utils import get_user_tasks
 from datetime import datetime, timedelta
-from task_manager.tasks import activate_task, generate_weekly_reports
+from task_manager.tasks import activate_task
 
 @login_required
 def home(request):
-    # Generate weekly reports for the logged-in user
-    generate_weekly_reports.delay()
-    
+    activate_task.delay()
+        
     if request.method == 'POST':
         fm = TaskForm(request.POST)
         if fm.is_valid():
             task = fm.save(commit=False)
             task.user = request.user  # Associate the task with the logged-in user
             task.save()
-            # Schedule the task to activate on the task's created_at time
-            print(task.created_at)
-            if task.created_at:
-                print("Task scheduling")
-                activate_task.apply_async(
-                    args= [task.id], 
-                    eta= task.created_at
-                )
             fm = TaskForm()
     else:
         fm = TaskForm()

@@ -22,7 +22,8 @@
       <span>
         Welcome to Task Manager <span style="font-weight: bold; color: #f39c12;">{{ user.username }}</span>.
       </span>
-      <form id="logoutForm" action="{% url 'logout' %}" method="POST" class="d-inline" data-logout-url="{% url 'logout' %}">
+      <form id="logoutForm" action="{% url 'logout' %}" method="POST" class="d-inline"
+        data-logout-url="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit"
           class="btn btn-dark d-flex align-items-center justify-content-center py-2 px-3 border rounded">
@@ -237,7 +238,7 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <script>
-    document.addEventListener('DOMContentLoaded',()=>{if (!localStorage.getItem('backgroundSet')) {localStorage.setItem('backgroundSet', 'true');setInterval(() => location.reload(), 1000);}
+    document.addEventListener('DOMContentLoaded', () => {
       const logoutForm = document.querySelector('#logoutForm');
       logoutForm.onsubmit = (e) => {
         if (!confirm('Are you sure you want to log out?')) {

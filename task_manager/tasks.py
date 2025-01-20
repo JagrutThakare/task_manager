@@ -10,22 +10,29 @@ from datetime import timedelta
 from tasks.models import Task, Report
 from task_manager import settings
 
-@shared_task
-def activate_task(task_id):
-    print("Task Started")
+@shared_task(bind=True)
+def activate_task(*args, **kwargs):
+    kolkata_tz = pytz.timezone('Asia/Kolkata')
+    
+    now_time = now().astimezone(kolkata_tz)
+    print("==================================================Task Started==========================================================")
     try:
         print("Task Executing")
-        task = Task.objects.get(id=task_id)
-        task.status = 'Pending'
-        task.save()
+        tasks = Task.objects.filter(status='Scheduled')
+
+        for task in tasks:
+            if(task.created_at < now_time):
+                task.status = 'Pending'
+                task.save()
+
     except Task.DoesNotExist:
-        print(f"Task with ID {task_id} does not exist.")
+        print(f"Tasks does not exist.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
     print("Task Ended")
-
-@shared_task
-def generate_weekly_reports():
+    
+@shared_task(bind=True)
+def generate_weekly_reports(*args, **kwargs):
     
     kolkata_tz = pytz.timezone('Asia/Kolkata')
     
@@ -111,3 +118,83 @@ def generate_weekly_reports():
         buffer.close()
 
 
+@shared_task(bind=True)
+def generate_reports(*args, **kwargs):
+    
+    kolkata_tz = pytz.timezone('Asia/Kolkata')
+    
+    now_time = now().astimezone(kolkata_tz)
+    end_of_week = now_time.replace(hour=9, minute=0, second=0, microsecond=0) - timedelta(days=now_time.weekday())
+    start_of_week = end_of_week - timedelta(days=7)
+
+    print(f"Generating Overall Reports")
+    users = User.objects.all()
+
+    for user in users:
+        if not user.email:
+            print(f"User {user.username} has no email address. Skipping.")
+            continue
+
+        tasks = Task.objects.filter(user=user)
+        scheduled_tasks = tasks.filter(status='Scheduled')
+        pending_tasks = tasks.filter(status='Pending')
+        completed_tasks = tasks.filter(status='Completed')
+
+        sections = [
+            ("Scheduled Tasks", scheduled_tasks),
+            ("Pending Tasks", pending_tasks),
+            ("Completed Tasks", completed_tasks),
+        ]
+
+        # Buffer for holding the entire report as a single PDF
+        buffer = BytesIO()
+
+        p = canvas.Canvas(buffer)
+        p.setFont("Helvetica-Bold", 14)
+        p.drawString(100, 800, f"Weekly Report for {user.username}")
+        p.setFont("Helvetica", 12)
+
+        # Set initial y-position
+        y_position = 750
+
+        for title, tasks in sections:
+            if not tasks.exists():
+                continue
+
+            p.drawString(50, y_position, title)
+            y_position -= 20
+
+            # Iterate through tasks and add them to the report
+            for task in tasks:
+                if y_position < 50:
+                    p.showPage()  # Start a new page if needed
+                    p.setFont("Helvetica", 12)
+                    y_position = 750  # Reset y position
+
+                if task.status == 'Scheduled':
+                    p.drawString(70, y_position, f"- {task.title} | Scheduled: {task.updated_at.astimezone(kolkata_tz)}")
+                else :
+                    p.drawString(70, y_position, f"- {task.title} | Created : {task.created_at.astimezone(kolkata_tz)} | Due : {task.due_date.astimezone(kolkata_tz)}")
+                
+                y_position -= 15
+
+        p.save()
+        buffer.seek(0)
+
+        # Send email with the generated PDF
+        email = EmailMessage(
+            subject=f"Weekly Report for {user.username}",
+            body="Please find your weekly task report attached.",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[user.email],
+        )
+        email.attach(f"Weekly_Report_{user.username}.pdf", buffer.getvalue(), "application/pdf")
+
+        try:
+            email.send()
+            print(f"Email sent to {user.email}")
+            Report.objects.create(user=user, start_of_week=start_of_week, end_of_week=end_of_week, is_sent=True)
+        except Exception as e:
+            print(f"Failed to send email to {user.email}: {e}")
+
+        buffer.close()
