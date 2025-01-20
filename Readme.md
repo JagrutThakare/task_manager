@@ -14,7 +14,7 @@
 - Bootstrap 5
 - PostgreSQL
 - Redis
-- Celery
+- Celery & Celery Beat
 ## Schema
 ![](/static/images/Schema.png)
 
@@ -78,6 +78,13 @@
 
 # Developer Journey :
 
+### Django Commands
+```bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```   
+
 ### Docker commands to create and use Redis
 ```bash
 docker run --name redis -p 6379:6379 -d redis
@@ -87,13 +94,7 @@ docker exec -it redis redis-cli
 ### Celery Commands :
 
 ```bash
-# Start Celery worker
 celery -A task_manager worker --loglevel=info -P solo
-
-# Start Celery Beat scheduler (if periodic tasks are needed)
 celery -A task_manager beat --loglevel=info
-
-# Start Flower 
 celery -A task_manager flower --port=5555
-
 ```     
