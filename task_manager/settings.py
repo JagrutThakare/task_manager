@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'tasks',
     'django_celery_beat',
+    'django_celery_results',
 ]
 
 STATIC_URL = '/static/'
@@ -75,20 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'task_manager.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'task_manager',  # Name of your PostgreSQL database
-        'USER': 'postgres',  # Your PostgreSQL username
-        'PASSWORD': 'jagrut@123',  # Your PostgreSQL password
-        'HOST': 'localhost',  # 'localhost' if the database is on your local machine
-        'PORT': '5432',  # Default PostgreSQL port
-    }
-}
 
 
 # Password validation
@@ -126,6 +113,20 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'task_manager',  
+        'USER': 'postgres',  
+        'PASSWORD': 'jagrut@123', 
+        'HOST': 'localhost',  
+        'PORT': '5432',  
+    }
+}
+
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -141,9 +142,21 @@ CACHES = {
 }
 
 # Celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
-CELERY_ACCEPT_CONTENT = ['json']
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'
+CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
+
+# Celery beat settings
+CELERY_BEAT_SCHEDULER = 'task_manager.schedulers:DatabaseScheduler'
+
+# SMTP Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'jagrutthakare12@gmail.com'
+EMAIL_HOST_PASSWORD = 'wrjvpksbjluuwyem'
+DEFAULT_FROM_EMAIL = 'Celery <jagrutthakare12@gmail.com>'

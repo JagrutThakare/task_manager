@@ -17,3 +17,13 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+class Report(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    generated_at = models.DateTimeField(auto_now_add=True)
+    start_of_week = models.DateTimeField()
+    end_of_week = models.DateTimeField()
+    is_sent = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Report for {self.user.username} ({self.start_of_week} - {self.end_of_week})"
