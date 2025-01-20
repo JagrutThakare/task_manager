@@ -26,10 +26,10 @@ app.conf.beat_schedule = {
         'task': 'task_manager.tasks.generate_weekly_reports',
         'schedule': crontab(hour=9, minute=00, day_of_week=1),  # Every Monday at 9:00 AM
     },
-    'generate_reports': {
-        'task': 'task_manager.tasks.generate_reports',
-        'schedule': crontab(hour=16, minute=10, day_of_week='1'),
-    },
+    # 'generate_reports': {
+    #     'task': 'task_manager.tasks.generate_reports',
+    #     'schedule': crontab(hour=16, minute=59, day_of_week='1'),
+    # },
 }
 
 app.autodiscover_tasks()
