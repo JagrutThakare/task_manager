@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +13,7 @@
         font-family: 'Mulish', sans-serif;
       }
       body {
-        background-image: url('/static/images/farm.jpg');
+        background-image: url('{% static 'images/farm.jpg' %}');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
