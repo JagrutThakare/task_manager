@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'tasks',
     'django_celery_beat',
     'django_celery_results',
+    'django_redis',
 ]
 
 STATIC_ROOT = BASE_DIR / 'productionfiles' # for production
