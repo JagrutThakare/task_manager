@@ -15,6 +15,7 @@
 - PostgreSQL
 - Redis
 - Celery & Celery Beat
+- AWS
 
 ## Demo (Click on Image to Preview Video)
 [![Watch the video](https://img.youtube.com/vi/Sl7XuY3ZP88/maxresdefault.jpg)](https://www.youtube.com/watch?v=Sl7XuY3ZP88)
