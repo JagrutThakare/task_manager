@@ -15,6 +15,10 @@
 - PostgreSQL
 - Redis
 - Celery & Celery Beat
+
+## Demo 
+![](/static/videos/Project.mp4)
+
 ## Schema
 ![](/static/images/Schema.png)
 
