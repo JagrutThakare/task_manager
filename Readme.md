@@ -16,11 +16,8 @@
 - Redis
 - Celery & Celery Beat
 
-## Demo
-<video width="640" height="360" controls>
-  <source src="static/videos/Project.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+## Demo (Click on Image to Preview Video)
+[![Watch the video](https://img.youtube.com/vi/Sl7XuY3ZP88/maxresdefault.jpg)](https://www.youtube.com/watch?v=Sl7XuY3ZP88)
 
 ## Schema
 ![](/static/images/Schema.png)
